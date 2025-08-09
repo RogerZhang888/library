@@ -39,8 +39,6 @@ class Book {
 function addBookToLibrary(title, author){
   let book = new Book(title, author);
   myLibrary.push(book);
-  console.log(book);
-  console.log(myLibrary);
   displayBooks(myLibrary);
 }
 
@@ -59,7 +57,13 @@ function displayBooks(myLibrary){
     newRow.appendChild(authorCell)
 
     let readCell = document.createElement("td")
-    readCell.innerHTML = book.read
+    const readBtn = document.createElement("button");
+    readBtn.textContent = `${book.read}`;
+    readBtn.dataset.id = book.id;
+    readBtn.addEventListener("click", () => {
+    changeReadStatus(book.id);
+    });
+    readCell.appendChild(readBtn);
     newRow.appendChild(readCell)
 
     let idCell = document.createElement("td")
@@ -67,11 +71,34 @@ function displayBooks(myLibrary){
     newRow.appendChild(idCell)
 
     let removeCell = document.createElement("td")
-    removeCell.innerHTML = "<button>Remove</button>";
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "Remove";
+    removeBtn.dataset.id = book.id;
+    removeBtn.addEventListener("click", () => {
+    removeBook(book.id);
+    });
+    removeCell.appendChild(removeBtn);
+
     newRow.appendChild(removeCell)
 
     table.appendChild(newRow);
   });
+}
+
+function removeBook(id) {
+  const index = myLibrary.findIndex(book => book.id === id)
+  if (index !== -1) {
+    myLibrary.splice(index, 1);
+  displayBooks(myLibrary);
+  }
+}
+
+function changeReadStatus(id) {
+  const index = myLibrary.findIndex(book => book.id === id)
+  if (index !== -1) {
+    myLibrary[index].read = !myLibrary[index].read;
+  }
+  displayBooks(myLibrary);
 }
 
 addEventListener(
