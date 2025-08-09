@@ -1,1 +1,1 @@
-# library
+For the odin project. It works functionally but no CSS. 
